@@ -95,16 +95,6 @@ class sapeCurl
         //http://passport.sape.ru/withdraw/webmoney/?wicket:interface=:1:withdrawFormContainer:form::IFormSubmitListener::
             'http://passport.sape.ru' .  $pUrl[1],
             array(
-                 'id0_hf_0'     => '',
-                 'id1_hf_0'     => '',
-                 'id2_hf_0'     => '',
-                 'id3_hf_0'     => '',
-                 'id4_hf_0'     => '',
-                 'id5_hf_0'     => '',
-                 'id6_hf_0'     => '',
-                 'id7_hf_0'     => '',
-                 'id8_hf_0'     => '',
-                 'id9_hf_0'     => '',
                  'amount'       => $amount,
                  'submitButton' => 'Создать заявку'
             ),
