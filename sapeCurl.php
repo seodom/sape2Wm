@@ -89,29 +89,38 @@ class sapeCurl
 
         echo 'http://passport.sape.ru' .  $pUrl[1], '<br>';
 
-        var_dump($amount);
+
+        if(!preg_match('|id="id([0-9]+)[^"]" name="amount"|', $page, $pId))
+        {
+            $this->lastError = 'regexp3 in "makeRequest4Payment" does not work!';
+            return FALSE;
+        }
+
+        $post = array(
+            'id' . $pId[1] . '_hf_0' => '',
+            'amount'       => $amount,
+            'submitButton' => 'Создать заявку'
+        );
+
+        print_r($post);
 
         $answer = $this->myCurl(
         //http://passport.sape.ru/withdraw/webmoney/?wicket:interface=:1:withdrawFormContainer:form::IFormSubmitListener::
             'http://passport.sape.ru' .  $pUrl[1],
-            array(
-                 'amount'       => $amount,
-                 'submitButton' => 'Создать заявку'
-            ),
+            $post,
             'http://passport.sape.ru/withdraw/webmoney/'
 
         );
+
+
 
         if(preg_match('|(wicket[^\s]+)|', $answer, $p ))
         {
             echo 'http://passport.sape.ru/?' . $p[1], '<br>';
             $answer = $this->myCurl(
                 'http://passport.sape.ru/?' . $p[1],
-                array(
-                     'idd_hf_0'     => '',
-                     'amount'       => $amount,
-                     'submitButton' => 'Создать заявку'
-                ));
+                $post,
+                'http://passport.sape.ru' .  $pUrl[1]);
         }
         print_r($answer);
         return TRUE;
