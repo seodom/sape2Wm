@@ -16,7 +16,7 @@ $sum = 1000; //Нельзя выводить меньше 150 рублей
 
 // Данные для входа в аккаунт sape.ru
 $login = 'webmaster1000';
-$password = '34555553';
+$password = '';
 
 // Название файла для cookies (доступен для записи)
 $cookieFile = 'secretFileCookie_09824.tmp';
@@ -29,7 +29,7 @@ if (!extension_loaded("curl"))
 { // ссылка ведет на запрос в google "как установить curl"
     die('<a href="http://goo.gl/ncGxw">cURL</a> extension is not available');
 }
-/*
+
 // Чистим файл
 @file_put_contents($cookieFile, '');
 
@@ -44,11 +44,11 @@ if (file_get_contents($cookieFile) != '')
 { // ссылка ведет на запрос в google "как установить права доступа 777 на папку"
     die('cookie file <a href="http://goo.gl/3yCCM">not writable</a>!');
 }
-*/
+
 require 'sapeCurl.php';
 $s = new sapeCurl($cookieFile);
 // Авторизуемся на сайте
-//$login = $s->login($login, $password);
+$s->login($login, $password);
 
 $money = $s->getBalance();
 
@@ -61,11 +61,23 @@ echo 'Money: ', $money, '<br>';
 
 if ($money >= $minSum)
 {
-    $s->makeRequest4Payment($sum);
-    echo $s->getLastError();
+    $ok = $s->makeRequest4Payment($sum);
+    $error = $s->getLastError();
+    if ('' == $error && $ok) //no errors
+    {
+        echo '<span class="success">OK</span>';
+    }
+    else // ошибка
+    {
+        echo $error;
+
+        // тут может быть отправка уведомления или логирование ошибок
+    }
 }
 else
+{
     echo 'Nothing to do.';
+}
 
 // Чистим файл с куками в целях безопасности
-//@file_put_contents($cookieFile, '');
+@file_put_contents($cookieFile, '');
