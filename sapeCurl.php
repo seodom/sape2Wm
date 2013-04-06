@@ -118,7 +118,7 @@ class sapeCurl
             'http://widget.sape.ru/balance/?alt=html&tpl=balance_main&container_id=balance_widget_src&charset=utf-8'
         );
 
-        if (preg_match('|<th>Доступно</th>\s+<td colspan="2">\s*<b>([^<]+)</b>|', $js, $match))
+        if (preg_match('|<th>Доступно к тратам</th>\s+<td colspan="2">\s*<b>([^<]+)</b>|', $js, $match))
         {
             //remove extra characters (ex. &nbsp;)
             $amount = preg_replace("|[^0-9,]|", '', $match[1]);
